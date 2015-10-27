@@ -11,7 +11,7 @@
 #define DA "DATA"
 #define RS "RESET"
 
-
+#define OK  "OK"
 #define SD  "QUIT"  // Finalizacion de la conexion de aplicacion
 #define SD2 "EXIT"  // Finalizacion de la conexion de aplicacion y finaliza servidor
 

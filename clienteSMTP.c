@@ -30,6 +30,7 @@ int main(int *argc, char *argv[])
 	struct sockaddr_in server_in;
 	char buffer_in[1024], buffer_out[1024],input[1024];
 	int recibidos=0,enviados=0;
+	int a=0;
 	int estado=S_HELO;
 	char option;
 
@@ -106,29 +107,27 @@ int main(int *argc, char *argv[])
 
 						}while(strlen(input)==0);
 						
-						sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",SD,CRLF);
-							
-							
-						
-						
-
-						
+						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",MA,input,CRLF);
+											
 						break;
 					case S_RCPT:
-						printf("CLIENTE> Introduzca la clave (enter para salir): ");
+						printf("CLIENTE> Introduzca el destinatario, para no introducir mas destinatarios pulse (enter): ");
 						gets(input);
 						if(strlen(input)==0)
 						{
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",SD,CRLF);
-							estado=S_QUIT;
+							/**sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",DA,CRLF);
+							estado=S_DATA;*/
+							a=1;
+							break;
 						}
 						else
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",PW,input,CRLF);
+							sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",RE,input,CRLF);
 						break;
 					case S_DATA:
-						printf("CLIENTE> Introduzca el comando adecuado (1-Para sumar,enter o QUIT para salir): ");
+						printf("CLIENTE> Introduzca la informacion, finalice con CRLF.CRLF: ");
 						gets(input);
-						if(strlen(input)==0||strcmp(input,SD)==0)
+						//Hay ke añadir un punto al comienzo de cada linea, y ver komo se va a finalizar la introduccion de datos en el cliente.
+						/**if(strlen(input)==0||strcmp(input,SD)==0) 
 						{
 							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",SD,CRLF);
 							estado=S_QUIT;
@@ -140,7 +139,7 @@ int main(int *argc, char *argv[])
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",SU,input,CRLF);
 						}
 						else
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",input,CRLF);
+							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",input,CRLF);*/
 						break;
 				 
 				
@@ -149,19 +148,19 @@ int main(int *argc, char *argv[])
 					if(estado!=NULL){
 					// Ejercicio: Comprobar el estado de envio
 						enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
-					if (enviados==SOCKET_ERROR)
-					{
-						printf("CLIENTE> Error enviando datos\r\n");
-						estado=S_QUIT;
-					}else if (enviados==0)
-					{
-						printf("CLIENTE> Se ha liberado la conexion de forma acordada");
-						estado=S_QUIT;
-					}
-					else
-					{
+						if (enviados==SOCKET_ERROR)
+						{
+							printf("CLIENTE> Error enviando datos\r\n");
+							estado=S_QUIT;
+						}else if (enviados==0)
+						{
+							printf("CLIENTE> Se ha liberado la conexion de forma acordada");
+							estado=S_QUIT;
+						}
+						else
+						{
 						printf("CLIENTE> Se han enviado los datos: %s",buffer_out);
-					}
+						}
 					}
 					//Recibo
 					recibidos=recv(sockfd,buffer_in,512,0);
@@ -178,25 +177,21 @@ int main(int *argc, char *argv[])
 						{
 							printf("CLIENTE> Conexión con el servidor cerrada\r\n");
 							estado=S_QUIT;
-						
-					
 						}
-					}
-					/**else if (estado==S_PASS && strncmp(buffer_in,OK,2)!=0)
-					{
-						
-					
-						estado=S_USER;
-					
 					}
 					else
 					{
 						buffer_in[recibidos]=0x00;
 						printf(buffer_in);
-						if(estado!=S_DATA && strncmp(buffer_in,OK,2)==0) 
+						if(estado==S_RCPT){
+							if(a==1){
+							estado++;
+							}
+						}
+						else if((estado!=S_DATA && estado!=S_RCPT) && strncmp(buffer_in,OK,2)==0) 
 							estado++;  
 					}
-					*/
+					
 				}while(estado!=S_QUIT);
 				
 	
