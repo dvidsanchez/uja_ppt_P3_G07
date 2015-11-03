@@ -30,7 +30,7 @@ int main(int *argc, char *argv[])
 	struct sockaddr_in server_in;
 	char buffer_in[1024], buffer_out[1024],input[1024];
 	int recibidos=0,enviados=0;
-	int a=0;
+	int a=0,b=0;
 	int estado=S_HELO;
 	char option;
 
@@ -90,9 +90,31 @@ int main(int *argc, char *argv[])
 				do{
 					switch(estado)
 					{
+						if (estado>1)
+						{
+							printf("CLIENTE> Por favor introduzca: ");
+							printf("CLIENTE> 1. Para añadir un destinatario. ");
+							printf("CLIENTE> 2. Para enviar un mail a el/los destinatario/s.");
+							printf("CLIENTE> 3. Para reiniciar la sesion.");
+							printf("CLIENTE> 4. Para finalizar la sesion.");
+							gets(input);
+							if(atoi(input)==1){
+							estado=2;
+							}
+							else if (atoi(input)==2)
+							{
+								estado=3;
+							}else if (atoi(input)==3)
+							{
+								estado=5;
+							}else if (atoi(input)==4)
+							{
+								estado=6;
+							}
+						}
 					case S_HELO:
 						do{
-						printf("CLIENTE> Introduzca el host al que desea conectar: ");
+						printf("CLIENTE> Introduzca el usuario: ");
 						gets(input);
 						}while(strlen(input)==0);
 						sprintf_s(buffer_out,sizeof(buffer_out), "%s %s",HE,input);
@@ -111,42 +133,41 @@ int main(int *argc, char *argv[])
 											
 						break;
 					case S_RCPT:
-						printf("CLIENTE> Introduzca el destinatario, para no introducir mas destinatarios pulse (enter): ");
-						gets(input);
-						if(strlen(input)==0)
+						
+						do
 						{
-							/**sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",DA,CRLF);
-							estado=S_DATA;*/
-							a=1;
+							printf("CLIENTE> Introduzca el destinatario: ");
+						gets(input);
+						} while (strlen(input)==0);
+						
+						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",RE,input,CRLF);
+						break;
+					
+					case S_DATA:
+						if (b==0)
+						{
+							printf("CLIENTE> Por favor introduzca primero un destinatario.");
+							estado=S_RCPT;
 							break;
 						}
-						else
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",RE,input,CRLF);
+						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s",DA,CRLF);
 						break;
-					case S_DATA:
-						printf("CLIENTE> Introduzca la informacion, finalice con CRLF.CRLF: ");
-						gets(input);
-						//Hay ke añadir un punto al comienzo de cada linea, y ver komo se va a finalizar la introduccion de datos en el cliente.
-						/**if(strlen(input)==0||strcmp(input,SD)==0) 
-						{
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",SD,CRLF);
-							estado=S_QUIT;
-						}
-						else if (strlen(input)==1)
-						{
-							printf("CLIENTE> Introduzca los numeros a sumar, formato(XXXX XXXX): ");
-						gets(input);
-						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",SU,input,CRLF);
-						}
-						else
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",input,CRLF);*/
-						break;
+
+					case S_MSGE:
+
 				 
 				
-					}
+					
+					case S_RSET:
+
+
+
 					//Envio
+					if(estado==S_RCPT&&b==0){
+					continue;
+					}
 					if(estado!=NULL){
-					// Ejercicio: Comprobar el estado de envio
+					
 
 						enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
 						if (enviados==SOCKET_ERROR)
@@ -184,20 +205,43 @@ int main(int *argc, char *argv[])
 					{
 						buffer_in[recibidos]=0x00;
 						printf(buffer_in);
-						if(estado==S_RCPT && strncmp(buffer_in,OK,1)==0){
-							if(a==1){
+						if(estado<S_RCPT && strncmp(buffer_in,OK,1)==0){
 							estado++;
 							continue;
 							}
-							printf("CLIENTE> Se ha aceptado el comando y el receptor.");
+						if (estado==S_RCPT&& strncmp(buffer_in,OK,1)!=0)
+						{
+							b++;
+							continue;
+						}	
+						if (estado==S_RCPT&& strncmp(buffer_in,OK,1)!=0)
+						{
+							printf("CLIENTE> Ha habido algun problema o no se reconoce el destinatario. Si persiste reinicie la sesion.\r\n");
+							continue;
 						}
+						if (estado==S_DATA && strncmp(buffer_in,POS,1)==0)
+						{
+							estado++;
+							continue;
+						}
+						if (estado==S_MSGE && strncmp(buffer_in,OK,1)!=0){
+						printf("CLIENTE> Ha habido algun problema con el envio del mensaje, por favor vuelva a intentarlo");
+						estado=S_RSET;
+						   continue;
+						}
+						/**if((estado!=S_DATA && estado!=S_RCPT) && strncmp(buffer_in,OK,1)==0) {
+							
+							estado++;  
+							continue;
+						}*/
+						/**
 						if(estado==S_RCPT && (strncmp(buffer_in,NEP,1)==0 || strncmp(buffer_in,POS,1)==0 )){
 						printf("CLIENTE> Ha habido algun error, intente introducir al receptor de nuevo sin errores.");
 						continue;
 						}
 						if(strncmp(buffer_in,NE,1)==0){
 							printf("CLIENTE> No se ha aceptado el comando y no se puede volver a intentar");
-							estado=S_QUIT;
+							
 							continue;
 						}
 						if(strncmp(buffer_in,NEP,1)==0){
@@ -211,10 +255,11 @@ int main(int *argc, char *argv[])
 						}
 						if (estado==S_DATA && strncmp(buffer_in,POS,1)==0)
 						{
+							estado++;
 
-						}
+						}*/
 					}
-					
+				}	
 				}while(estado!=S_QUIT);
 				
 	

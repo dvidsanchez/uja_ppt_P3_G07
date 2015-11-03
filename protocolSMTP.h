@@ -9,7 +9,7 @@
 #define MA "MAIL FROM:"
 #define RE "RCPT TO:"
 #define DA "DATA"
-#define RS "RESET"
+#define RS "RSET"
 
 #define PRE "1"
 #define OK  "2"
@@ -32,7 +32,9 @@
 #define S_MAIL 1
 #define S_RCPT 2
 #define S_DATA 3
-#define S_QUIT 4
+#define S_MSGE 4
+#define S_RSET 5
+#define S_QUIT 6
 
 
 //PUERTO DEL SERVICIO
