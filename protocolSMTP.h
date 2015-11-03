@@ -6,12 +6,17 @@
 //#define SC "USER"  // SOLICITUD DE CONEXION USER usuario 
 //#define PW "PASS"  // Password del usuario  PASS password
 #define HE "HELO" 
-#define MA "MAIL"
-#define RE "RCPT"
+#define MA "MAIL FROM:"
+#define RE "RCPT TO:"
 #define DA "DATA"
 #define RS "RESET"
 
-#define OK  "OK"
+#define PRE "1"
+#define OK  "2"
+#define POS "3"
+#define NEP "4"
+#define NE  "5"
+
 #define SD  "QUIT"  // Finalizacion de la conexion de aplicacion
 #define SD2 "EXIT"  // Finalizacion de la conexion de aplicacion y finaliza servidor
 

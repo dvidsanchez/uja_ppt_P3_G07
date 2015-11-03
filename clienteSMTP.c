@@ -147,6 +147,7 @@ int main(int *argc, char *argv[])
 					//Envio
 					if(estado!=NULL){
 					// Ejercicio: Comprobar el estado de envio
+
 						enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
 						if (enviados==SOCKET_ERROR)
 						{
@@ -183,13 +184,35 @@ int main(int *argc, char *argv[])
 					{
 						buffer_in[recibidos]=0x00;
 						printf(buffer_in);
-						if(estado==S_RCPT){
+						if(estado==S_RCPT && strncmp(buffer_in,OK,1)==0){
 							if(a==1){
 							estado++;
+							continue;
 							}
+							printf("CLIENTE> Se ha aceptado el comando y el receptor.");
 						}
-						else if((estado!=S_DATA && estado!=S_RCPT) && strncmp(buffer_in,OK,2)==0) 
+						if(estado==S_RCPT && (strncmp(buffer_in,NEP,1)==0 || strncmp(buffer_in,POS,1)==0 )){
+						printf("CLIENTE> Ha habido algun error, intente introducir al receptor de nuevo sin errores.");
+						continue;
+						}
+						if(strncmp(buffer_in,NE,1)==0){
+							printf("CLIENTE> No se ha aceptado el comando y no se puede volver a intentar");
+							estado=S_QUIT;
+							continue;
+						}
+						if(strncmp(buffer_in,NEP,1)==0){
+							printf("CLIENTE> No se ha aceptado el comando pero se puede volver a intentar");
+							continue;
+						}
+						if((estado!=S_DATA && estado!=S_RCPT) && strncmp(buffer_in,OK,1)==0) {
+							
 							estado++;  
+							continue;
+						}
+						if (estado==S_DATA && strncmp(buffer_in,POS,1)==0)
+						{
+
+						}
 					}
 					
 				}while(estado!=S_QUIT);
@@ -219,3 +242,13 @@ int main(int *argc, char *argv[])
 	return(0);
 
 }
+/**
+
+incluir windows.h
+TIME_ZONE_INFORMATION TzIold;
+DWORD duRet;
+duRet=GetTimeZoneInformation
+
+
+
+*/
