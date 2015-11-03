@@ -28,9 +28,9 @@ int main(int *argc, char *argv[])
 {
 	SOCKET sockfd;
 	struct sockaddr_in server_in;
-	char buffer_in[1024], buffer_out[1024],input[1024];
+	char buffer_in[1024], buffer_out[1024],input[1024],sb[150],fr[50],to[50],dt[80],cc[200],cco[200],aux[1];
 	int recibidos=0,enviados=0;
-	int a=0,b=0;
+	int a=0,b=0,c=0;
 	int estado=S_HELO;
 	char option;
 
@@ -130,7 +130,7 @@ int main(int *argc, char *argv[])
 						}while(strlen(input)==0);
 						
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",MA,input,CRLF);
-											
+						strcat(fr,input);					
 						break;
 					case S_RCPT:
 						
@@ -141,6 +141,23 @@ int main(int *argc, char *argv[])
 						} while (strlen(input)==0);
 						
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",RE,input,CRLF);
+						c++;
+						if (c>1)
+						{
+							printf("CLIENTE> Indique si se trata de copia oculta [s/n]: ");
+							do
+							{
+								gets(aux);
+							} while (aux!="s"&&aux!="n");
+							if (aux=="s")
+							{
+								strcat(cco,input);
+							}else
+							{
+								strcat(cc,input);
+							}
+
+						}
 						break;
 					
 					case S_DATA:
@@ -154,18 +171,23 @@ int main(int *argc, char *argv[])
 						break;
 
 					case S_MSGE:
-
+						printf("CLIENTE> Indique el asunto: ");
+						gets(sb);
 				 
 				
 					
 					case S_RSET:
-
-
+						printf("CLIENTE> Se reiniciara la sesion.");
+						estado=S_MAIL;
+						b=0;
+						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s",RS,CRLF);
+						break;
 
 					//Envio
 					if(estado==S_RCPT&&b==0){
 					continue;
 					}
+					
 					if(estado!=NULL){
 					
 
