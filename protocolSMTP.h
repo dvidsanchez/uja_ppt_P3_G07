@@ -10,7 +10,7 @@
 #define RE "RCPT TO:"
 #define DA "DATA"
 #define RS "RSET"
-
+// RESPUESTAS A COMANDOS DE APLICACION
 #define PRE "1"
 #define OK  "2"
 #define POS "3"
@@ -20,10 +20,10 @@
 #define SD  "QUIT"  // Finalizacion de la conexion de aplicacion
 #define SD2 "EXIT"  // Finalizacion de la conexion de aplicacion y finaliza servidor
 
-// RESPUESTAS A COMANDOS DE APLICACION
-//#define OK  "OK"
-//#define ER  "ERROR"
 
+
+#define S_MAILt 9
+#define S_pHELO 8
 //FIN DE RESPUESTA
 #define CRLF "\r\n"
 
@@ -32,9 +32,10 @@
 #define S_MAIL 1
 #define S_RCPT 2
 #define S_DATA 3
-#define S_MSGE 4
-#define S_RSET 5
-#define S_QUIT 6
+#define S_MSGC 4
+#define S_MSGB 5
+#define S_RSET 6
+#define S_QUIT 7
 
 
 //PUERTO DEL SERVICIO

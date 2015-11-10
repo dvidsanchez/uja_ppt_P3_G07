@@ -18,21 +18,50 @@ Modificado por: Antonio Perez Pozuelo y David Sanchez Fernandez
 #include <time.h>
 #include <conio.h>
 
+
 #include "protocolSMTP.h"
 
+int getTimeZone()
+{
+   TIME_ZONE_INFORMATION tziOld;
+	DWORD dwRet;
+
+	dwRet = GetTimeZoneInformation(&tziOld);
+
+	 if(dwRet == TIME_ZONE_ID_STANDARD || dwRet == TIME_ZONE_ID_UNKNOWN)    
+		 return tziOld.StandardBias/60;
+   else if( dwRet == TIME_ZONE_ID_DAYLIGHT )
+      return tziOld.DaylightBias/60;
+   else
+   {
+      printf("GTZI failed (%d)\n", GetLastError());
+      return 0;
+   }
+
+  
+
+}
+/**char[] getaddr(){
 
 
+}*/
 
 
 int main(int *argc, char *argv[])
 {
+	time_t t=time(0);
+	struct tm *tlocal=localtime(&t);
 	SOCKET sockfd;
 	struct sockaddr_in server_in;
-	char buffer_in[1024], buffer_out[1024],input[1024],sb[150],fr[50],to[50],dt[80],cc[200],cco[200],aux[1];
+	char buffer_in[1024], buffer_out[1024],input[1024],sb[150],fr[50],to[50],dt[150],cc[200],cco[200],aux[30];
 	int recibidos=0,enviados=0;
-	int a=0,b=0,c=0;
+	int a=0,b=0,c=0,d=0,i;
 	int estado=S_HELO;
 	char option;
+	char hostname[128];
+	struct hostent      *returned_host;//Para obtener la IP
+	struct in_addr **addr_list;
+
 
 	WORD wVersionRequested;
 	WSADATA wsaData;
@@ -40,7 +69,9 @@ int main(int *argc, char *argv[])
 
     char ipdest[16];
 	char default_ip[16]="127.0.0.1";
-	
+	cc[0]=0x00;
+	cco[0]=cc[0];
+
 	//Inicialización Windows sockets
 	wVersionRequested=MAKEWORD(1,1);
 	err=WSAStartup(wVersionRequested,&wsaData);
@@ -66,37 +97,71 @@ int main(int *argc, char *argv[])
 		{
 			printf("CLIENTE> SOCKET CREADO CORRECTAMENTE\r\n");
 
-		
-			printf("CLIENTE> Introduzca la IP destino (pulsar enter para IP por defecto): ");
-			gets(ipdest);
+			do
+			{
 
-			if(strcmp(ipdest,"")==0)
+			
+			printf("CLIENTE>introduzca un nombre de host o una IP\r\n");
+			gets(input);
+			if (inet_addr(ipdest)==INADDR_NONE)
+				{
+					returned_host=gethostbyname(input);
+				if (returned_host==NULL)
+				{
+					d=0;
+
+				}else
+				{
+					strcpy(ipdest, inet_ntoa(*(struct in_addr*)returned_host->h_addr));
+					d=1;
+					}
+				
+					
+				}
+			
+
+			else
+			{
+				
+				if(strcmp(ipdest,"")==0)
 				strcpy(ipdest,default_ip);
+				d=1;
+				
+				
+			}
+			
 
+			
 
+			} while (d!=1);
 			server_in.sin_family=AF_INET;
 			server_in.sin_port=htons(TCP_SERVICE_PORT);
 			server_in.sin_addr.s_addr=inet_addr(ipdest);
 			
-			estado=S_HELO;
+			
+
+
+			estado=S_pHELO;
 		
 			// establece la conexion de transporte
 			if(connect(sockfd,(struct sockaddr*)&server_in,sizeof(server_in))==0)
 			{
+
 				printf("CLIENTE> CONEXION ESTABLECIDA CON %s:%d\r\n",ipdest,TCP_SERVICE_PORT);
 			
 		
 				//Inicio de la máquina de estados
 				do{
-					switch(estado)
-					{
-						if (estado>1)
+					
+
+					
+					if (estado==S_RCPT)//Menu una vez identificado el usuario
 						{
-							printf("CLIENTE> Por favor introduzca: ");
-							printf("CLIENTE> 1. Para añadir un destinatario. ");
-							printf("CLIENTE> 2. Para enviar un mail a el/los destinatario/s.");
-							printf("CLIENTE> 3. Para reiniciar la sesion.");
-							printf("CLIENTE> 4. Para finalizar la sesion.");
+							printf("CLIENTE> Por favor introduzca: \r\n");
+							printf("CLIENTE> 1. Para anadir un destinatario.\r\n ");
+							printf("CLIENTE> 2. Para enviar un mail a el/los destinatario/s.\r\n");
+							printf("CLIENTE> 3. Para reiniciar la sesion.\r\n");
+							printf("CLIENTE> 4. Para finalizar la sesion.\r\n");
 							gets(input);
 							if(atoi(input)==1){
 							estado=2;
@@ -106,91 +171,143 @@ int main(int *argc, char *argv[])
 								estado=3;
 							}else if (atoi(input)==3)
 							{
-								estado=5;
+								estado=6;
 							}else if (atoi(input)==4)
 							{
-								estado=6;
+								estado=7;
+								continue;
 							}
 						}
-					case S_HELO:
-						do{
-						printf("CLIENTE> Introduzca el usuario: ");
-						gets(input);
-						}while(strlen(input)==0);
-						sprintf_s(buffer_out,sizeof(buffer_out), "%s %s",HE,input);
+					
+					switch(estado)
+					{
 						
-						// Se recibe el mensaje de bienvenida
-						break;
-					case S_MAIL:
-						// establece la conexion de aplicacion 
+					case S_HELO:
+						{
 						do{
-						printf("CLIENTE> Identifique al remitente: ");
+						printf("CLIENTE> Pulse enter para continuar: \r\n");
 						gets(input);
-
+						}while(strlen(input)!=0);
+						gethostname(hostname, sizeof hostname);//Enviamos el nombre de la maquina en la que se ejecuta el cliente.
+						sprintf_s(buffer_out,sizeof(buffer_out),"%s %s%s",HE,hostname,CRLF);
+						//Se establece la conexion de aplicacion
+						break;
+						}
+					case S_MAIL:
+						{
+						 //Identificamos al usuario
+						do{
+						printf("CLIENTE> Identifique al remitente: \r\n");
+						gets(input);
 						}while(strlen(input)==0);
+						
 						
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",MA,input,CRLF);
-						strcat(fr,input);					
+						strcpy(fr,input);		//Se copia el remitente al campo from.			
 						break;
-					case S_RCPT:
+						}
+					case S_RCPT:	//Se añaden destinatarios, si hay mas de uno se preguntara si es CC o BCC. 
 						
-						do
 						{
-							printf("CLIENTE> Introduzca el destinatario: ");
+						do{
+							printf("CLIENTE> Introduzca el destinatario: \r\n");
 						gets(input);
-						} while (strlen(input)==0);
+						}while(strlen(input)==0);
 						
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",RE,input,CRLF);
-						c++;
-						if (c>1)
+						
+						if (c>0)
 						{
-							printf("CLIENTE> Indique si se trata de copia oculta [s/n]: ");
+							printf("CLIENTE> Indique si se trata de copia oculta [s/n]: \r\n");
 							do
 							{
 								gets(aux);
-							} while (aux!="s"&&aux!="n");
-							if (aux=="s")
+							} while (!strcmp(aux,"s")==0&&!strcmp(aux,"n")==0);
+							if (strcmp(aux,"s"))
 							{
-								strcat(cco,input);
+								strcpy(aux,input);
+								strcat(cco,aux);
+								
 							}else
 							{
-								strcat(cc,input);
+								strcpy(aux,input);
+								strcat(cc,aux);
 							}
 
 						}
-						break;
-					
-					case S_DATA:
-						if (b==0)
+						else
 						{
-							printf("CLIENTE> Por favor introduzca primero un destinatario.");
+							strcpy(to,input);
+						}
+						break;
+					}
+					case S_DATA://Se envia el comando DATA para pasar al estado de envio del mensaje.
+						{
+						if (c<=0)
+						{
+							printf("CLIENTE> Por favor introduzca primero un destinatario.\r\n");
 							estado=S_RCPT;
+							c-=1;
 							break;
 						}
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s",DA,CRLF);
+						
 						break;
-
-					case S_MSGE:
-						printf("CLIENTE> Indique el asunto: ");
+						}
+					case S_MSGC:
+						{//Se envian las cabeceras del mensaje
+						printf("CLIENTE> Indique el asunto: \r\n");
 						gets(sb);
-				 
-				
-					
-					case S_RSET:
-						printf("CLIENTE> Se reiniciara la sesion.");
-						estado=S_MAIL;
-						b=0;
-						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s",RS,CRLF);
+						strftime(dt,sizeof(dt),"%a, %d %b %y %H:%M:%S",tlocal);
+						if (getTimeZone()>0)
+						{
+							strcat(dt,"+");
+						}
+						else
+						{
+							strcat(dt,"-");
+						}
+						sprintf_s(dt,sizeof(dt),"%s%d",dt,getTimeZone()); 
+						
+						sprintf_s(buffer_out,sizeof(buffer_out),"From: %s\r\nTo: %s\r\nSubject: %s\r\nCC: %s\r\nBCC: %s\r\nDate: %s\r\n%s",fr,to,sb,cc,cco,dt,CRLF);
+						
 						break;
+						}
+					case S_MSGB:
+						{//Se envia el cuerpo del mensaje, se estan enviando lineas hasta que se introduce un punto.
+						printf("CLIENTE> Escriba el cuerpo del mensaje, para finalizar ingrese un punto unicamente: \r\n");
+						gets(input);
+						if (strcmp(input,".")==0)
+						{
+							input[0]=0x2E;
+							estado=S_MAILt;
 
-					//Envio
-					if(estado==S_RCPT&&b==0){
-					continue;
-					}
+							printf("%d",estado);						
+						}
+						sprintf_s(buffer_out,sizeof(buffer_out),"%s%s",input,CRLF);
+						
+						break;
+						}
+					case S_RSET:
+						{//Se vacian todas las variables trascendentales y se pasa al estado MAIL FROM
+						printf("CLIENTE> Se reiniciara la sesion.");
+						strcpy(to,"");
+						strcpy(cc,"");
+						strcpy(cco,"");
+						b=0;
+						c=0;
+						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s",RS,CRLF);
+						
+						break;
+						}
+					}//Envio
 					
-					if(estado!=NULL){
+					//Se envia siempre que no sea el estado "pre HELO"
 					
-
+					if(estado!=S_QUIT+1)
+					{
+					
+						printf("a");
 						enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
 						if (enviados==SOCKET_ERROR)
 						{
@@ -206,34 +323,66 @@ int main(int *argc, char *argv[])
 						printf("CLIENTE> Se han enviado los datos: %s",buffer_out);
 						}
 					}
-					//Recibo
-					recibidos=recv(sockfd,buffer_in,512,0);
+					printf("1f");
+					if (estado==S_MSGB)//Si es el cuerpo del mensaje solo se envia hasta que se introduzca un punto.
+					{
+						
+						continue;
+					}
 					
+					if (estado==S_MSGC)
+					{
+						estado++;
+						continue;
+					}
+					printf("1");
+				//Recibo
+					recibidos=recv(sockfd,buffer_in,sizeof(buffer_in),0);
+					printf("recibe");
 					if(recibidos<=0)
 					{
+						
 						DWORD error=GetLastError();
+						printf("fail");
 						if(recibidos<0)
 						{
 							printf("CLIENTE> Error %d en la recepción de datos\r\n",error);
 							estado=S_QUIT;
+							
 						}
 						else
 						{
 							printf("CLIENTE> Conexión con el servidor cerrada\r\n");
 							estado=S_QUIT;
+							
 						}
 					}
-					else
+					else//Comprobacion de las respuestas recibidas por el servidor en funcion de los distintos estados.
 					{
 						buffer_in[recibidos]=0x00;
 						printf(buffer_in);
+						if (estado==S_pHELO&&strncmp(buffer_in,OK,1)==0)
+						{
+							estado=S_HELO;
+							continue;
+						}
+						if (estado==S_MAILt&&strncmp(buffer_in,OK,1)==0)
+					{
+						estado=S_MAIL;
+						continue;
+					}
+					
+						if(estado==S_RSET && strncmp(buffer_in,OK,1)==0){
+							estado=S_MAIL;
+							continue;
+						}
 						if(estado<S_RCPT && strncmp(buffer_in,OK,1)==0){
 							estado++;
 							continue;
 							}
-						if (estado==S_RCPT&& strncmp(buffer_in,OK,1)!=0)
+						if (estado==S_RCPT&& strncmp(buffer_in,OK,1)==0)
 						{
-							b++;
+							c++;
 							continue;
 						}	
 						if (estado==S_RCPT&& strncmp(buffer_in,OK,1)!=0)
@@ -246,44 +395,28 @@ int main(int *argc, char *argv[])
 							estado++;
 							continue;
 						}
-						if (estado==S_MSGE && strncmp(buffer_in,OK,1)!=0){
-						printf("CLIENTE> Ha habido algun problema con el envio del mensaje, por favor vuelva a intentarlo");
+						if (estado==S_MAILt && strncmp(buffer_in,OK,1)==0){
+						printf("CLIENTE> Se ha enviado el mensaje");
 						estado=S_RSET;
 						   continue;
 						}
-						/**if((estado!=S_DATA && estado!=S_RCPT) && strncmp(buffer_in,OK,1)==0) {
+						
+						else{
+							estado=S_RSET;
+							printf("CLIENTE>Ha habido algun problema, se reiniciara la sesion.");
+						}
 							
-							estado++;  
-							continue;
-						}*/
-						/**
-						if(estado==S_RCPT && (strncmp(buffer_in,NEP,1)==0 || strncmp(buffer_in,POS,1)==0 )){
-						printf("CLIENTE> Ha habido algun error, intente introducir al receptor de nuevo sin errores.");
-						continue;
-						}
-						if(strncmp(buffer_in,NE,1)==0){
-							printf("CLIENTE> No se ha aceptado el comando y no se puede volver a intentar");
-							
-							continue;
-						}
-						if(strncmp(buffer_in,NEP,1)==0){
-							printf("CLIENTE> No se ha aceptado el comando pero se puede volver a intentar");
-							continue;
-						}
-						if((estado!=S_DATA && estado!=S_RCPT) && strncmp(buffer_in,OK,1)==0) {
-							
-							estado++;  
-							continue;
-						}
-						if (estado==S_DATA && strncmp(buffer_in,POS,1)==0)
-						{
-							estado++;
-
-						}*/
 					}
-				}	
+					
 				}while(estado!=S_QUIT);
-				
+						strcpy(aux,"");
+						strcpy(dt,"");
+						strcpy(to,"");
+						strcpy(fr,"");
+						strcpy(cc,"");
+						strcpy(cco,"");
+						b=0;
+						c=0;
 	
 		
 			}

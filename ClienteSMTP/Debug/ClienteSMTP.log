@@ -1,0 +1,71 @@
+﻿Compilación iniciada a las 10/11/2015 12:06:10.
+     1>Proyecto "C:\Users\dimanxe\Documents\GitHub\uja_ppt_P2_G_7\ClienteSMTP\ClienteSMTP.vcxproj" en el nodo 2 (Build destinos).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt ..\clienteSMTP.c
+         clienteSMTP.c
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(53): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\time.inl(112) : vea la declaración de 'localtime'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(105): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(115): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(127): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(165): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(189): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(201): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(206): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(214): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(224): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(228): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(229): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : vea la declaración de 'strcat'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(233): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(234): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : vea la declaración de 'strcat'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(240): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(260): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(264): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : vea la declaración de 'strcat'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(268): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : vea la declaración de 'strcat'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(279): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(261) : vea la declaración de 'gets'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(294): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(295): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(296): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(412): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(413): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(414): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(415): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(416): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(417): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : vea la declaración de 'strcpy'
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(58): warning C4101: 'i' : variable local sin referencia
+     1>c:\users\dimanxe\documents\github\uja_ppt_p2_g_7\clientesmtp.c(63): warning C4101: 'addr_list' : variable local sin referencia
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dimanxe\Documents\GitHub\uja_ppt_P2_G_7\ClienteSMTP\Debug\ClienteSMTP.exe" /INCREMENTAL /NOLOGO wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dimanxe\Documents\GitHub\uja_ppt_P2_G_7\ClienteSMTP\Debug\ClienteSMTP.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dimanxe\Documents\GitHub\uja_ppt_P2_G_7\ClienteSMTP\Debug\ClienteSMTP.lib" /MACHINE:X86 Debug\clienteSMTP.obj
+         ClienteSMTP.vcxproj -> C:\Users\dimanxe\Documents\GitHub\uja_ppt_P2_G_7\ClienteSMTP\Debug\ClienteSMTP.exe
+     1>Compilación del proyecto terminada "C:\Users\dimanxe\Documents\GitHub\uja_ppt_P2_G_7\ClienteSMTP\ClienteSMTP.vcxproj" (Build destinos).
+
+Compilación correcta.
+
+Tiempo transcurrido 00:00:01.61
